@@ -34,6 +34,6 @@ int main(){
   afficher_unb(som);
   printf("\n *********produit****\n");
   unbounded_int prod=unbounded_int_produit(list,k);
-  affiche(prod);
+  afficher_unb(prod);
    return 0;
 }

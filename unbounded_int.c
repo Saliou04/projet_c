@@ -312,3 +312,35 @@ unbounded_int unbounded_int_difference( unbounded_int a, unbounded_int b){
   return res;
 }
 
+unbounded_int unbounded_int_produit(unbounded_int a, unbounded_int b){
+  int n=a.len+b.len;
+  char *c=malloc(n+1);
+  char *aa=unbounded_int2string(a);
+  char *bb=unbounded_int2string(b);
+  if(a.signe==b.signe){
+    c[0]='+';
+  }else{
+    c[0]='-';
+  }
+  for(int i=1;i<n+1;i++){
+    c[i]='0';
+
+  }
+   for(int i =1;i<a.len;i++){
+    int r=0;
+    if(bb[i]=='0')
+      continue;
+    for(int j=1;j<b.len;j++){
+     
+      int v=(c[i+j-1]-'0')+(aa[j]-'0')*(bb[i]-'0')+r;
+      c[i+j-1]=(char)(v%10+'0');
+      r=v/10;
+      // printf("****************%c\n",c[i+j-1]);
+    }
+    c[i+b.len]=(char)(r+'0');
+  }
+ c[n]='\0';
+ printf("resultat %s\n ",c);
+ return  string2unbounded_int(c);
+}
+  
