@@ -11,42 +11,44 @@
 
 chiffre * creer_chiffre(chiffre *pre,char c,chiffre * suiv){
   chiffre * x=malloc(sizeof(chiffre));
-  if(x==NULL) return x;
-  x->c=c;
-  x->suivant=suiv;
-  x->precedent=pre;
+  if(x == NULL ) return x;
+  x->c = c;
+  x->suivant = suiv;
+  x->precedent = pre;
   return x;
 }
 
 
 void afficher(chiffre *x){
-  if(x==NULL){
+  if(x == NULL){
     printf("\n");
     return ;
   }
     printf("%c", x->c);
     afficher(x->suivant);
 }
+
+//Cette fonction permet d'ajouter un chiffre au debut d'un autre
 chiffre * ajouter_debut(chiffre * x, char c){
- chiffre *y=creer_chiffre(NULL,c,x);
- if(x!=NULL){
-   x->precedent=y;
- }
+  chiffre *y=creer_chiffre(NULL,c,x); //creation du chiffre 
+  if(x!=NULL){      //cr22ation de la liaison avec le chiffre x
+    x->precedent=y; 
+  }
   return y;
 }
-  
+//ajouter le chiffre c a la fin d'une chiffre x
 chiffre *ajouter_fin(chiffre * x, char c){
- chiffre *y=creer_chiffre(x,c,NULL);
- if(x!=NULL){
-   x->suivant=y;
+  chiffre *y = creer_chiffre( x , c , NULL);
+ if(x != NULL){
+   x->suivant = y;
  }
   return y;
 }
 
 chiffre * ajouter_chiffre(chiffre *x, char c){
-  if(x==NULL) return creer_chiffre(NULL,c,NULL);
-   else if(x->suivant==NULL){
-    x->suivant=creer_chiffre(x,c,NULL);
+  if(x == NULL) return creer_chiffre( NULL, c , NULL);
+   else if(x->suivant == NULL){
+    x->suivant= creer_chiffre( x , c , NULL);
     return x;
    }
    x->suivant=ajouter_chiffre(x->suivant,c);
@@ -313,34 +315,46 @@ unbounded_int unbounded_int_difference( unbounded_int a, unbounded_int b){
 }
 
 unbounded_int unbounded_int_produit(unbounded_int a, unbounded_int b){
+  //longueur de c et alloccation d'une memoire capable de
+  //recevoir le resultat
   int n=a.len+b.len;
   char *c=malloc(n+1);
-  char *aa=unbounded_int2string(a);
-  char *bb=unbounded_int2string(b);
+  /*trasformation dess nombre en chaine de caractere et
+   *positionnement du pointeur a la fin de la chaine 
+   * afin de pouvoir apliquer l'algo de multiplication 
+   * utilisation sur papier
+   */ 
+  char *aa=unbounded_int2string(a)+a.len;
+  char *bb=unbounded_int2string(b)+b.len;
+ 
+  //initialisation de tous les valeur a 0
+  for(int i=0;i<n+1;i++){
+    c[i]='0';
+  }
+     
+  for(int j =0;j<b.len;j++){ //parcour de la chaine b
+    int r=0;                //initialisation du retune a 0
+    if(bb[j]=='0')  //decalage pour les caractere qui vallent 0
+      continue;
+    
+    for(int i=0;i<a.len;i++){ //parcour de la chaine de a
+      //calcule de la valeur a plac2 sur la bonne place
+      int v=(c[n-(i+j+1)]-'0')+(aa[-i]-'0')*(bb[-j]-'0')+r;
+      c[n-(i+j+1)]=(char)(v%10+'0');
+      r=v/10;
+    }
+    //ajouter le retenue dans la bonne place
+    c[n-(j+a.len+1)]=(char)(r+'0');
+  }
+  //determination du signe du resultats
   if(a.signe==b.signe){
     c[0]='+';
   }else{
     c[0]='-';
   }
-  for(int i=1;i<n+1;i++){
-    c[i]='0';
-
-  }
-   for(int i =1;i<a.len;i++){
-    int r=0;
-    if(bb[i]=='0')
-      continue;
-    for(int j=1;j<b.len;j++){
-     
-      int v=(c[i+j-1]-'0')+(aa[j]-'0')*(bb[i]-'0')+r;
-      c[i+j-1]=(char)(v%10+'0');
-      r=v/10;
-      // printf("****************%c\n",c[i+j-1]);
-    }
-    c[i+b.len]=(char)(r+'0');
-  }
- c[n]='\0';
- printf("resultat %s\n ",c);
+  c[n]='\0';// mettre la caractere null pour mettre la fin de la chaine
+ 
+  //transformation de la chaine obtenue en unbounded_int
  return  string2unbounded_int(c);
 }
   
