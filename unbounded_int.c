@@ -67,7 +67,7 @@ unbounded_int string2unbounded_int(const char *e){
   } else if(isdigit(e[0])){
       x.signe='+';
   }
-  while(e[i]=='0'){
+  while(e[i]=='0' && e[i+1]!='\0'){
     i++; 
   }
    if(isdigit(e[i])){
@@ -181,8 +181,28 @@ int unbounded_int_cmp_unbounded_int(unbounded_int a, unbounded_int b){
   }
   return 0;
 }
+long long transform_int(unbounded_int a){
+  long long i=0;
+  chiffre * aux=a.premier;
+  while(aux!=NULL){
+    i=i*10+(aux->c-'0');
+    aux=aux->suivant;
+  }
+  return (a.signe=='+')? i:-i;
+}
 int unbounded_int_cmp_ll(unbounded_int a, long long b){
-  return unbounded_int_cmp_unbounded_int(a, ll2unbounded_int(b));
+   //return -1 si a<b;
+  //0 si a==b; 1 si a>b
+  // char c= b>=0 ? '+':'-';
+  if(a.signe=='+' && b <0){
+    return 1;
+  }
+  if(a.signe=='-' && b>0){
+    return -1;
+  }
+  long long i=transform_int(a);
+  if(i==b) return 0;
+  return (i<b)? -1: 1;
 }
 
 unbounded_int somme(unbounded_int a, unbounded_int b){

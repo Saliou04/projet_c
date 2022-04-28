@@ -4,7 +4,7 @@
 void test(){
   printf("***************Test des fonction des fonction *********************\n");
   printf("\n**********Transformation d'une chaine en unbounded_int***********\n");
-  char *c="1234";
+  char *c="0000000000";
   unbounded_int k=string2unbounded_int(c);
   printf("\n******************charactere c :*****************************\n \n%s",c);
   printf("\n\n*******************L'Unbounded_int ******************************* k\n");
@@ -28,7 +28,7 @@ void test(){
    printf("\n********************produit de  k et  list********************************** \n");
     unbounded_int prod=unbounded_int_produit(list,k);
   afficher_unb(prod);
-     
+ 
 }
 int main(){
   test();
