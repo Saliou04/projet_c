@@ -24,7 +24,7 @@ void afficher(chiffre *x){
     printf("\n");
     return ;
   }
-    printf("%c", x->c);
+  printf("%c", x->c);
     afficher(x->suivant);
 }
 
@@ -95,10 +95,11 @@ unbounded_int string2unbounded_int(const char *e){
 
 void afficher_unb(unbounded_int x){
   
-  printf("signe: %c\n",x.signe);
+   printf("signe: %c\n",x.signe);
   printf("TAILLE:    %ld\n",x.len);
+
    afficher(x.premier);
-  printf("\n");
+   printf("\n");
 }
 
 
@@ -375,6 +376,7 @@ unbounded_int unbounded_int_produit(unbounded_int a, unbounded_int b){
   c[n]='\0';// mettre la caractere null pour mettre la fin de la chaine
  
   //transformation de la chaine obtenue en unbounded_int
+
  return  string2unbounded_int(c);
 }
-  
+

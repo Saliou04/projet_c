@@ -115,10 +115,9 @@ void afficher_chiffre_flo(chiffre *x,FILE *fr){
 void afficher_unbou_flo(unbounded_int x,FILE *fr){
   
   fprintf(fr," %c ",x.signe);
-  // printf("TAILLE:    %ld\n",x.len);
 
   afficher_chiffre_flo(x.premier,fr);
-  //fprintf(fr,"\n");
+  fprintf(fr,"\n");
  }
 void funct(char *fic, char *dest){
   FILE *src=fopen(fic,"r");
@@ -227,8 +226,8 @@ void funct(char *fic, char *dest){
 }
 
 
-int main(int argc, char **argv){
-  funct("/home/saliou/Cour/2021/C/projet/p2/tex.txt",NULL);
+int main(){
+  funct("/home/saliou/Cour/2021/C/projet/p2/tex.txt","/home/saliou/Cour/2021/C/projet/p2/resulat.txt");
   
   return 0;
 }
