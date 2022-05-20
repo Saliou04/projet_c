@@ -78,11 +78,14 @@ unbounded_int string2unbounded_int(const char *e){
        x.signe='*';
       return x;
   }
-  for (int j=i+1;e[j]!='\0';j++){
-    if(isdigit(e[j])){
-      x.dernier->suivant=ajouter_fin(x.dernier,e[j]);
+   //  for (int j=i+1;e[j]!='\0';j++){
+   i+=1;
+   while(e[i]!='\0'){
+    if(isdigit(e[i])){
+      x.dernier->suivant=ajouter_fin(x.dernier,e[i]);
       x.dernier=x.dernier->suivant;
       x.len+=1;
+      i+=1;
     }else{
       x.signe='*';
       return x;
@@ -283,8 +286,8 @@ unbounded_int unbounded_int_somme(unbounded_int a, unbounded_int b){
    // la deux sont de meme signe positif
   if(a.signe=='+' && b.signe=='+'){
     res=somme(a,b);
-    
-  }//les deuxx sont negatif
+  
+  }//les deux sont negatif
   else if(a.signe=='-' && b.signe=='-'){
     res=somme(a,b);
     res.signe='-';

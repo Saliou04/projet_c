@@ -144,10 +144,10 @@ void funct(char *fic, char *dest){
     j=0;
     k=0;
     line_file=suprimer_espace(line_file);
-    int n=strlen(line_file)+1;
-    char * nom_var= malloc(n);
-    char *valeur_var= malloc(n);
-    char *valeur_var2= malloc(n);
+    //int n=strlen(line_file)+1;
+    char * nom_var= malloc(LEN);
+    char *valeur_var= malloc(LEN);
+    char *valeur_var2= malloc(LEN);
     if(nom_var==NULL || valeur_var==NULL || valeur_var2==NULL){
       printf("%s \n", "NULL");
       return ;
@@ -163,7 +163,7 @@ void funct(char *fic, char *dest){
        }
       
        fprintf(fw,"%s = ",nom_var);
-
+     
        afficher_unbou_flo(get_liste(l,nom_var),fw);
       
     }else {
@@ -212,7 +212,7 @@ void funct(char *fic, char *dest){
 	  }else{
 	      l=insertion(l,nom_var,get_liste(l,valeur_var));
 	  }
-	   
+	  
 	     	 
       }else{
 	//gerer le cas ou i n''y pas d'affectation
@@ -220,6 +220,12 @@ void funct(char *fic, char *dest){
 	return;
       }
     }
+    //free(nom_var);
+     // free(nom_var);
+    // free(valeur_var);
+     //free(valeur_var);
+     // free(valeur_var2);
+     //free(valeur_var2);
   }
   //  afficher_liste(l);
   fclose(src);
@@ -228,7 +234,7 @@ void funct(char *fic, char *dest){
 
 
 int main(int argc, char **argv){
-  funct("/home/saliou/Cour/2021/C/projet/p2/tex.txt",NULL);
+  funct("/home/saliou/Cour/2021/C/projet/p2/projet_c/tex.txt",NULL);
   
   return 0;
 }
