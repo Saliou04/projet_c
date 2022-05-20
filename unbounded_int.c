@@ -75,7 +75,7 @@ unbounded_int string2unbounded_int(const char *e){
        x.dernier=x.premier;
        x.len+=1;
    }else{
-       x.signe='*';
+      x.signe='*';
       return x;
   }
   for (int j=i+1;e[j]!='\0';j++){

@@ -5,13 +5,13 @@
 void test(){
   printf("***************Test des fonction des fonction *********************\n");
   printf("\n**********Transformation d'une chaine en unbounded_int***********\n");
-  char *c="0000000000";
+  char *c="-000023400000";
   unbounded_int k=string2unbounded_int(c);
-  printf("\n******************charactere c :*****************************\n \n%s",c);
-  printf("\n\n*******************L'Unbounded_int ******************************* k\n");
+  printf("\n******************Le caractère :*****************************\n \n%s",c);
+  printf("\n\n*******************L'unbounded_int ******************************* \n");
   afficher_unb(k);
   printf("\n**************Transformation de long en unbounded_int**************\n");
-  long long i=123456789;
+  long long i=-123456789;
   printf("i : %lld\n",i);
   unbounded_int list =ll2unbounded_int(i);
   printf("\n*******************L'Unbounded_int ******************************* list\n");
