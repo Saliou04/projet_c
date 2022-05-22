@@ -18,6 +18,11 @@ chiffre * creer_chiffre(chiffre *pre,char c,chiffre * suiv){
   return x;
 }
 
+unbounded_int initialize(){
+  unbounded_int unb = {.dernier = NULL, .premier = NULL, .len=0,.signe='*'};
+  return unb;
+}
+
 
 void afficher(chiffre *x){
   if(x == NULL){
@@ -55,13 +60,34 @@ chiffre * ajouter_chiffre(chiffre *x, char c){
    return x;
 }
 
+int isJustSpaces(const char *e){
+  for (size_t i = 0; i < strlen(e); i++)
+  {
+    if( ! isspace(e[i]) ) return 0;
+  }
+  return 1;
+}
 
+//renvoie 
+int isValidNumber(unbounded_int unb){
+  return unb.signe != '*';
+}
+
+int isSigned(const char *e){
+  return (e[0]=='+' || e[0]=='-');
+}
 
 unbounded_int string2unbounded_int(const char *e){
+  //if (e == NULL || isJustSpaces(e)) 
    unbounded_int x;
    x.len=0;
-   int i=0;  
-  if(e[0]=='+' || e[0]=='-'){
+   int i=0; 
+   if (e==NULL || isJustSpaces(e) || (isSigned(e) && strlen(e) == 1) || strlen(e) == 0){
+     x.signe = '*';
+     x.dernier = x.premier = NULL;
+     return x;
+   }
+  if (isSigned(e)) {
     x.signe=e[0];
     i=1;
   } else if(isdigit(e[0])){
@@ -76,16 +102,14 @@ unbounded_int string2unbounded_int(const char *e){
        x.len+=1;
    }else{
       x.signe='*';
+      x.dernier = x.premier = NULL;
       return x;
   }
-   //  for (int j=i+1;e[j]!='\0';j++){
-   i+=1;
-   while(e[i]!='\0'){
-    if(isdigit(e[i])){
-      x.dernier->suivant=ajouter_fin(x.dernier,e[i]);
+  for (int j=i+1;e[j]!='\0';j++){
+    if(isdigit(e[j])){
+      x.dernier->suivant=ajouter_fin(x.dernier,e[j]);
       x.dernier=x.dernier->suivant;
       x.len+=1;
-      i+=1;
     }else{
       x.signe='*';
       return x;
@@ -98,11 +122,11 @@ unbounded_int string2unbounded_int(const char *e){
 
 void afficher_unb(unbounded_int x){
   
-   printf("signe: %c\n",x.signe);
+  printf("signe: %c\n",x.signe);
   printf("TAILLE:    %ld\n",x.len);
-
-   afficher(x.premier);
-   printf("\n");
+  printf("NOMBRE : \n");
+  x.signe == '*' ? printf("L'unbounded_int en question n'est pas valide : ce n'est pas un nombre \n") : afficher(x.premier);
+  printf("\n");
 }
 
 
@@ -134,7 +158,6 @@ unbounded_int ll2unbounded_int(long long i){
   return x;
 }
 
-
 char * unbounded_int2string(unbounded_int i){
   int x=i.len+2;
   char *tab =malloc(x);
@@ -160,7 +183,7 @@ int unbounded_int_cmp_unbounded_int(unbounded_int a, unbounded_int b){
     a.signe='+';
   }
   if(b.len==1 && b.premier->c=='0'){
-    a.signe='+';
+    b.signe='+';
   }
   
   if(a.signe=='+' && b.signe=='-') return 1;
@@ -206,7 +229,7 @@ int unbounded_int_cmp_ll(unbounded_int a, long long b){
   }
   long long i=transform_int(a);
   if(i==b) return 0;
-  return (i<b)? -1: 1;
+  return (i<b) ? -1: 1;
 }
 
 unbounded_int somme(unbounded_int a, unbounded_int b){
@@ -282,19 +305,20 @@ unbounded_int diff(unbounded_int a, unbounded_int b){
 }
 
 unbounded_int unbounded_int_somme(unbounded_int a, unbounded_int b){
+    
    unbounded_int res;
    // la deux sont de meme signe positif
   if(a.signe=='+' && b.signe=='+'){
     res=somme(a,b);
-  
-  }//les deux sont negatif
+    
+  }//les deuxx sont negatif
   else if(a.signe=='-' && b.signe=='-'){
     res=somme(a,b);
     res.signe='-';
     return res;
-  }// les deux sont de signes distingue 
+  }// les deux sont de signes distincts 
   else {
-    char c1=a.signe;// je stock les signes
+    char c1=a.signe;// je stocke les signes
     char c2=b.signe;
     //je calcule les valeurs absolue
     if(c1=='-'){ 
@@ -302,15 +326,15 @@ unbounded_int unbounded_int_somme(unbounded_int a, unbounded_int b){
     }if(c2=='-'){
       b.signe='+';
     }
-    // si |a|>|b|; a+b=a-|b|
+    // si |a| |>|b|; a+b=a-|b|
     if(unbounded_int_cmp_unbounded_int(a,b)==1){
       res=diff(a,b);
       res.signe=c1;
       //si |a|<|b| ; a+b=b-|a|
     }else if(unbounded_int_cmp_unbounded_int(a,b)==-1){
-	res=diff(b,a);
-	res.signe=c2;
-	// |a|=|b| donc a+b=0
+      res=diff(b,a);
+      res.signe=c2;
+	    // |a|=|b| donc a+b=0
     }else{
      
       res.signe='+';
@@ -318,8 +342,8 @@ unbounded_int unbounded_int_somme(unbounded_int a, unbounded_int b){
       res.premier=creer_chiffre(NULL,'0',NULL);
       res.dernier=res.premier;
     }
-    // je remet les bon signe pour ne pasmodifier les structure
-    //de base
+    // je remets les bon signe pour ne pas modifier les structure
+    // de base
     a.signe=c1;
     b.signe=c2;
   }
@@ -339,6 +363,8 @@ unbounded_int unbounded_int_difference( unbounded_int a, unbounded_int b){
 }
 
 unbounded_int unbounded_int_produit(unbounded_int a, unbounded_int b){
+  
+  if (!isValidNumber(a) || !isValidNumber(b)) return initialize();
   //longueur de c et alloccation d'une memoire capable de
   //recevoir le resultat
   int n=a.len+b.len;
